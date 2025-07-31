@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: auth-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/auth_db
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 1216
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+jwt:
+  secret: 9cd99b6ee24040e5e3e9c74fe85b336c8df748a53e32e3c87b5089f862457648277f5752d5bc561a0dd05abc34f6d9fa696dafdb349565b723efa0eb3707a339

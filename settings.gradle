@@ -1,1 +1,6 @@
 rootProject.name = 'backend'
+include 'common-library'
+include 'auth-service'
+include 'member-service'
+include 'board-service'
+include 'discovery-server'

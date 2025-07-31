@@ -1,65 +1,55 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.4'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.springframework.boot' version '3.5.4' apply false
+	id 'io.spring.dependency-management' version '1.1.7' apply false
 }
 
-group = 'cc'
-version = '0.0.1-SNAPSHOT'
+allprojects {
+	group = 'com.cc'
+	version = '0.0.1-SNAPSHOT'
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+	repositories {
+		mavenCentral()
 	}
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+subprojects {
+	apply plugin: 'java'
+
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
+	}
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	// 모든 하위 프로젝트 공통 의존성
+	dependencies {
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	}
 }
 
-repositories {
-	mavenCentral()
+// Spring Boot 서비스들에만 적용
+configure(subprojects.findAll {
+	it.name in ['auth-service', 'member-service', 'board-service']
+}) {
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
 }
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
-
-	//sercurity
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
-	testImplementation 'org.springframework.security:spring-security-test'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
-
-	//JWT
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1'
-	implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.1'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-	//s3
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.767'
-	implementation 'software.amazon.awssdk:s3:2.27.3'
-	implementation 'software.amazon.awssdk:s3control:2.27.3'
-	implementation 'software.amazon.awssdk:s3outposts:2.27.3'
-
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
+wrapper {
+	gradleVersion = '8.4'
+	distributionType = Wrapper.DistributionType.BIN
 }
