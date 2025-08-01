@@ -57,6 +57,22 @@ configure(subprojects.findAll { it.name == 'eureka-server' }) {
 	}
 }
 
+//gateway 설정
+configure(subprojects.findAll { it.name == 'gateway-service' }) {
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		}
+	}
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
+}
+
 // Spring Boot 서비스들에만 적용
 configure(subprojects.findAll {
 	it.name in ['auth-service', 'member-service', 'board-service']
