@@ -40,18 +40,18 @@ spring:
         - id: member-service
           uri: lb://member-service
           predicates:
-            - Path=/member/**
+            - Path=/members/**
           filters:
             - name: AuthenticationFilter  # 커스텀 인증 필터
 
         - id: board-service
           uri: lb://board-service
           predicates:
-            - Path=/board/**
+            - Path=/boards/**
           filters:
             - name: AuthenticationFilter
 
-#TODO : JWT 설정
+#JWT 설정
 jwt:
   secret:${JWT_SECRET}
 
