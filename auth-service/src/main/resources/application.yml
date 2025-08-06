@@ -4,12 +4,22 @@ server:
 spring:
   application:
     name: auth-service
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
 
   datasource:
     url: jdbc:mysql://localhost:3306/auth_db
-    username: root
+    username: ${DB_USERNAME}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: 1216
+    password:  ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -20,7 +30,7 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 
 jwt:
-  secret: 9cd99b6ee24040e5e3e9c74fe85b336c8df748a53e32e3c87b5089f862457648277f5752d5bc561a0dd05abc34f6d9fa696dafdb349565b723efa0eb3707a339
+  secret: ${JWT_SECRET}
 
 eureka:
   client:

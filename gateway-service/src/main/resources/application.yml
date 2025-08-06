@@ -42,15 +42,20 @@ spring:
           predicates:
             - Path=/member/**
           filters:
-#            - name: AuthenticationFilter  # 커스텀 인증 필터
+            - name: AuthenticationFilter  # 커스텀 인증 필터
 
         - id: board-service
           uri: lb://board-service
           predicates:
             - Path=/board/**
           filters:
-#            - name: AuthenticationFilter  # 커스텀 인증 필터
+            - name: AuthenticationFilter
 
+#TODO : JWT 설정
+jwt:
+  secret:${JWT_SECRET}
+
+#Eureka Client 설정
 eureka:
   client:
     service-url:
