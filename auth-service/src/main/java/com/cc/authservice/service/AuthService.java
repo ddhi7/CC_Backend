@@ -29,8 +29,8 @@ public class AuthService {
             }
 
             return TokenResponse.builder()
-                    .accessToken(tokenProvider.createAccessToken(member.getUsername()))
-                    .refreshToken(tokenProvider.createRefreshToken(member.getUsername()))
+                    .accessToken(tokenProvider.createAccessToken(member.getId().toString()))
+                    .refreshToken(tokenProvider.createRefreshToken(member.getId().toString()))
                     .build();
     }
 
