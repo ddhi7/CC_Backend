@@ -1,0 +1,16 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/ddhi7/config-repo.git
+          username: ddhi7
+          password: ${GIT_TOKEN}
+          search-paths:
+            - '{application}'
+          default-label: main
