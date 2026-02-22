@@ -14,3 +14,7 @@ spring:
           search-paths:
             - '{application}'
           default-label: main
+  security:
+    user:
+      name: ${USERNAME}
+      password: ${PASSWORD}
