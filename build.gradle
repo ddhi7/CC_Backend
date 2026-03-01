@@ -58,7 +58,7 @@ configure(subprojects.findAll { it.name == 'eureka-server' }) {
 }
 
 //gateway 설정
-configure(subprojects.findAll { it.name == 'gateway-service' }) {
+configure(subprojects.findAll { it.name == 'gateway' }) {
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
 

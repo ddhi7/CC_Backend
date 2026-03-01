@@ -1,7 +1,6 @@
-package com.cc.gatewayservice.filter;
+package com.cc.gateway.filter;
 
 
-import com.netflix.spectator.impl.Config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
