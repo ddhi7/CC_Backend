@@ -15,6 +15,8 @@ allprojects {
 
 subprojects {
 	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
 
 	java {
 		toolchain {
@@ -32,55 +34,6 @@ subprojects {
 		springCloudVersion = '2023.0.4'
 	}
 
-	// 모든 하위 프로젝트 공통 의존성
-	dependencies {
-		compileOnly 'org.projectlombok:lombok'
-		annotationProcessor 'org.projectlombok:lombok'
-		testImplementation 'org.springframework.boot:spring-boot-starter-test'
-		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	}
-}
-
-// Eureka Server에만 적용
-configure(subprojects.findAll { it.name == 'eureka-server' }) {
-	apply plugin: 'org.springframework.boot'
-	apply plugin: 'io.spring.dependency-management'
-
-	dependencyManagement {
-		imports {
-			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-		}
-	}
-
-	tasks.named('test') {
-		useJUnitPlatform()
-	}
-}
-
-//gateway 설정
-configure(subprojects.findAll { it.name == 'gateway' }) {
-	apply plugin: 'org.springframework.boot'
-	apply plugin: 'io.spring.dependency-management'
-
-	dependencyManagement {
-		imports {
-			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-		}
-	}
-
-	tasks.named('test') {
-		useJUnitPlatform()
-	}
-}
-
-// Spring Boot 서비스들에만 적용
-configure(subprojects.findAll {
-	it.name in ['auth-service', 'member-service', 'board-service']
-}) {
-	apply plugin: 'org.springframework.boot'
-	apply plugin: 'io.spring.dependency-management'
-
-
 	dependencyManagement {
 		imports {
 			mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
@@ -88,11 +41,11 @@ configure(subprojects.findAll {
 		}
 	}
 
-	// Eureka Client, Feign Client 의존성 추가
 	dependencies {
-		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-		implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-		implementation 'org.springframework.boot:spring-boot-starter-actuator'
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	}
 
 	tasks.named('test') {
@@ -100,7 +53,7 @@ configure(subprojects.findAll {
 	}
 }
 
-wrapper {
-	gradleVersion = '8.4'
-	distributionType = Wrapper.DistributionType.BIN
+project(':common-library') {
+	bootJar { enabled = false }
+	jar { enabled = true }
 }
